@@ -1,0 +1,5 @@
+@extends('layout')
+@section('title','Мои заказы — Тихо')
+@section('content')
+<section class="orders-page"><a class="back" href="/#catalog">← К коллекции</a><h1>Мои <em>заказы.</em></h1>@if(session('order'))<div class="success" role="status"><h2>Заказ оформлен</h2><p>Номер: {{session('order')}}</p><p>Он появился в списке ниже.</p></div>@endif @forelse($orders as $order)<article class="order-card"><div class="order-head"><div><small>ЗАКАЗ ОТ {{\Illuminate\Support\Carbon::parse($order->created_at)->format('d.m.Y')}}</small><h2>№ {{Str::limit($order->reference,18)}}</h2></div><strong>{{number_format($order->total,0,',',' ')}} ₽</strong></div><p>Город: {{$order->city}}</p><ul>@foreach(json_decode($order->items) as $item)<li><span>{{$item->name}} × {{$item->quantity}}</span><span>{{number_format($item->price * $item->quantity,0,',',' ')}} ₽</span></li>@endforeach</ul></article>@empty<p class="intro">Заказов пока нет. Выберите предмет в коллекции.</p><a class="button" href="/#catalog">Смотреть коллекцию</a>@endforelse</section>
+@endsection
